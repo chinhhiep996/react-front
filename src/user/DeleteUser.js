@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import {Redirect, Link} from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
-import DefaultProfile from '../images/avatar.jpg'
-import {isAuthenticated, signout} from '../auth'
-import {remove} from './apiUser'
+import { isAuthenticated, signout } from '../auth'
+import { remove } from './apiUser'
 
-class Profile extends Component {
+class DeleteUser extends Component {
 
     state = {
         redirect: false
@@ -15,28 +14,28 @@ class Profile extends Component {
         const token = isAuthenticated().token
         const userId = this.props.userId
         remove(userId, token)
-        .then(data => {
-            if(data.error) {
-                console.log(data.error)
-            } else {
-                signout(() => console.log("User is deleted"))
-                this.setState({redirect: true})
-            }
-        })
+            .then(data => {
+                if (data.error) {
+                    console.log(data.error)
+                } else {
+                    signout(() => console.log("User is deleted"))
+                    this.setState({ redirect: true })
+                }
+            })
     }
 
     deleteConfirmed = () => {
         let answer = window.confirm("Are you sure you to delete your account?")
-        if(answer) {
+        if (answer) {
             this.deleteAccount()
         }
     }
 
     render() {
-        if(this.state.redirect) {
+        if (this.state.redirect) {
             return <Redirect to="/" />
         }
-        
+
         return (
             <>
                 <button
@@ -50,4 +49,4 @@ class Profile extends Component {
     }
 }
 
-export default Profile
+export default DeleteUser;

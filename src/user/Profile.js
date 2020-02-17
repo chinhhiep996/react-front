@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import {Redirect, Link} from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 
 import DefaultProfile from '../images/avatar.jpg'
-import {isAuthenticated} from '../auth'
-import {read} from './apiUser'
+import { isAuthenticated } from '../auth'
+import { read } from './apiUser'
 import DeleteUser from './DeleteUser'
 
 class Profile extends Component {
@@ -17,13 +17,13 @@ class Profile extends Component {
 
     init = (userId) => {
         read(userId, isAuthenticated().token)
-        .then(data => {
-            if(data.error) {
-                this.setState({redirectToSignin: true})
-            } else {
-                this.setState({user: data})
-            }
-        })
+            .then(data => {
+                if (data.error) {
+                    this.setState({ redirectToSignin: true })
+                } else {
+                    this.setState({ user: data })
+                }
+            })
     }
 
     componentDidMount() {
@@ -31,24 +31,24 @@ class Profile extends Component {
         this.init(userId)
     }
 
-    UNSAFE_componentWillReceiveProps (props) {
+    UNSAFE_componentWillReceiveProps(props) {
         const userId = props.match.params.userId
         this.init(userId)
     }
 
     render() {
-        const {redirectToSignin, user} = this.state
-        if(redirectToSignin) return <Redirect to="/signin" />
+        const { redirectToSignin, user } = this.state
+        if (redirectToSignin) return <Redirect to="/signin" />
 
         return (
             <div className="container">
                 <h2 className="mt-5 mb-5">Profile</h2>
                 <div className="row">
                     <div className="col-md-6">
-                        <img className="card-img-top" 
-                            src={DefaultProfile} 
+                        <img className="card-img-top"
+                            src={DefaultProfile}
                             alt={user.name}
-                            style={{width: '100%', height: '15vw', objectFit: 'cover'}}
+                            style={{ width: '100%', height: '15vw', objectFit: 'cover' }}
                         />
                     </div>
                     <div className="col-md-6">
@@ -62,7 +62,7 @@ class Profile extends Component {
 
                         {isAuthenticated().user && isAuthenticated().user._id === user._id && (
                             <div className="d-inline-block mt-5">
-                                <Link 
+                                <Link
                                     className="btn btn-raised btn-success mr-5"
                                     to={`/user/edit/${user._id}`}
                                 >
